@@ -80,7 +80,6 @@ class Game(object):
                 if collision.ball_collision(b, self.wall_list):
                     self.bullets_1.remove(b)
                 if b.rect.colliderect(self.player_2.rect):
-                    print("True")
                     self.score_b += 1
                     self.bullets_1.remove(b)
                 b.draw(self.screen)
@@ -89,7 +88,6 @@ class Game(object):
                 if collision.ball_collision(b, self.wall_list):
                     self.bullets_2.remove(b)
                 if b.rect.colliderect(self.player_1.rect):
-                    print("True")
                     self.score_a += 1
                     self.bullets_2.remove(b)
                 b.draw(self.screen)
