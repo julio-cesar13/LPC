@@ -7,19 +7,14 @@ class Tank(object):
     def __init__(self, x, y, number_of_player):
         self.number_of_player = 1
         self.img = pygame.image.load(f"Sprites/tank{number_of_player}.png")
-        self.w = self.img.get_width()
-        self.h = self.img.get_height()
-        self.x = x
-        self.y = y
-        self.rect = (self.x, self.y, self.w, self.h)
+        self.rect = pygame.Rect(x, y, self.img.get_width(), self.img.get_height())
         self.angle = 0
         self.rotatedSurf = pygame.transform.rotate(self.img, self.angle)
-        self.rotatedRect = self.rotatedSurf.get_rect()
-        self.rotatedRect.center = (self.x, self.y)
+        self.rotatedRect = self.rotatedSurf.get_rect(center=(self.rect.x, self.rect.y))
         self.cosine = math.cos(math.radians(self.angle + 90))
         self.sine = math.sin(math.radians(self.angle + 90))
-        self.head = (self.x + self.cosine * self.w//2,
-                     self.y - self.sine * self.h//2)
+        self.head = (self.rect.x + self.cosine * self.rect.w // 2,
+                     self.rect.y - self.sine * self.rect.h // 2)
         self.tankBullets = []
         self.top_collision = False
         self.bottom_collision = False
@@ -31,51 +26,31 @@ class Tank(object):
 
     def turn_left(self):
         self.angle += 5
-        self.rotatedSurf = pygame.transform.rotate(self.img, self.angle)
-        self.rotatedRect = self.rotatedSurf.get_rect()
-        self.rotatedRect.center = (self.x, self.y)
-        self.cosine = math.cos(math.radians(self.angle + 90))
-        self.sine = math.sin(math.radians(self.angle + 90))
-        self.head = (self.x + self.cosine * self.w // 2,
-                     self.y - self.sine * self.h // 2)
+        self.turn()
 
     def turn_right(self):
         self.angle -= 5
-        self.rotatedSurf = pygame.transform.rotate(self.img, self.angle)
-        self.rotatedRect = self.rotatedSurf.get_rect()
-        self.rotatedRect.center = (self.x, self.y)
-        self.cosine = math.cos(math.radians(self.angle + 90))
-        self.sine = math.sin(math.radians(self.angle + 90))
-        self.head = (self.x + self.cosine * self.w // 2,
-                     self.y - self.sine * self.h // 2)
+        self.turn()
 
     def move_bottom(self):
         if self.top_collision is True:
-            self.y = self.y + 4
+            self.rect.y = self.rect.y + 4
             self.top_collision = False
-            self.rect = (self.x, self.y, self.w, self.h)
 
     def move_top(self):
         if self.bottom_collision is True:
-            self.y = self.y - 4
+            self.rect.y = self.rect.y - 4
             self.bottom_collision = False
-            self.rect = (self.x, self.y, self.w, self.h)
 
     def move_left(self):
         if self.right_collision is True:
-
-            self.x = self.x - 4
-            self.y = self.y
+            self.rect.x = self.rect.x - 4
             self.right_collision = False
-            self.rect = (self.x, self.y, self.w, self.h)
 
     def move_right(self):
         if self.left_collision is True:
-
-            self.x = self.x + 4
-            self.y = self.y
+            self.rect.x += 4
             self.left_collision = False
-            self.rect = (self.x, self.y, self.w, self.h)
 
     def move(self):
 
@@ -83,16 +58,18 @@ class Tank(object):
                 or self.left_collision is True:
             pass
         else:
-            self.x += self.cosine * 6
-            self.y -= self.sine * 6
+            self.rect.x += self.cosine * 6
+            self.rect.y -= self.sine * 6
+            self.turn()
 
-            self.rotatedRect = self.rotatedSurf.get_rect()
-            self.rotatedRect.center = (self.x, self.y)
-            self.cosine = math.cos(math.radians(self.angle + 90))
-            self.sine = math.sin(math.radians(self.angle + 90))
-            self.head = (self.x + self.cosine * self.w // 2,
-                         self.y - self.sine * self.h // 2)
-            self.rect = (self.x, self.y, self.w, self.h)
+    def turn(self):
+        self.rotatedSurf = pygame.transform.rotate(self.img, self.angle)
+        self.rotatedRect = self.rotatedSurf.get_rect()
+        self.rotatedRect.center = (self.rect.x, self.rect.y)
+        self.cosine = math.cos(math.radians(self.angle + 90))
+        self.sine = math.sin(math.radians(self.angle + 90))
+        self.head = (self.rect.x + self.cosine * self.rect.w // 2,
+                     self.rect.y - self.sine * self.rect.h // 2)
 
     def shoot(self):
         self.tankBullets.append(bullet.Bullet(self.head, self.cosine,

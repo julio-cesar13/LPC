@@ -3,21 +3,17 @@ import pygame
 
 class Bullet(object):
     def __init__(self, point, cosine, sine):
-        self.img = pygame.image.load("Sprites/obstacle.png")
-        self.point = point
-        self.x, self.y = self.point
-        self.w = 4
-        self.h = 4
-        self.c = cosine
-        self.s = sine
-        self.xv = self.c * 10
-        self.yv = self.s * 10
-        self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+        self.image = pygame.image.load("Sprites/obstacle.png")
+        self.x, self. y = point
+        self.rect = pygame.Rect(self.x, self.y, 4, 4)
+        self.cos = cosine
+        self.sin = sine
+        self.speed_vertical = self.cos * 10
+        self.speed_horizontal = self.sin * 10
 
     def move(self):
-        self.x += self.xv
-        self.y -= self.yv
-        self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+        self.rect.x += self.speed_vertical
+        self.rect.y -= self.speed_horizontal
 
     def draw(self, screen):
         # screen.blit(self.img, [self.x, self.y, self.w, self.h])

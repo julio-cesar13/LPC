@@ -30,6 +30,9 @@ class Game(object):
 
     def run(self):
 
+        score_2 = Score(self.score_a, 600, (0, 0, 255))
+        score_1 = Score(self.score_b, 200, (0, 255, 0))
+
         while self.game_loop:
             self.clock.tick(60)
             if not self.game_over:
@@ -76,10 +79,11 @@ class Game(object):
             self.player_1.draw(self.screen)
             self.player_2.draw(self.screen)
 
+
             for b in self.bullets_1:
                 if collision.ball_collision(b, self.wall_list):
                     self.bullets_1.remove(b)
-                if b.rect.colliderect(self.player_2.rect):
+                if b.rect.colliderect(self.player_2):
                     self.score_b += 1
                     self.bullets_1.remove(b)
                 b.draw(self.screen)
@@ -87,7 +91,8 @@ class Game(object):
             for b in self.bullets_2:
                 if collision.ball_collision(b, self.wall_list):
                     self.bullets_2.remove(b)
-                if b.rect.colliderect(self.player_1.rect):
+                if b.rect.colliderect(self.player_1):
+                    print("True")
                     self.score_a += 1
                     self.bullets_2.remove(b)
                 b.draw(self.screen)
