@@ -19,9 +19,8 @@ class Bullet:
     def move(self):
         if not detection_collision(self.rect):
             self.dy *= -1
-            x = self.rect.x + self.dx
-            y = self.rect.y + self.dy
-            rect = pygame.Rect(x, y, 5, 5)
+            self.rect.y = self.rect.y + self.dy * 2
+            rect = pygame.Rect(self.rect.x, self.rect.y, 5, 5)
             self.count += 1
             if not detection_collision(rect) and not (self.rect.x == -50):
                 self.dx *= -1
