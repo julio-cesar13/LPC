@@ -66,7 +66,7 @@ class Tank:
                     if self.count % 2 == 0 and self.count != 0:
                         self.coordinates[1] = 100
                     elif self.count % 2 == 1 and self.count != 0:
-                        self.coordinates[0] = 650
+                        self.coordinates[1] = 650
 
                 death_count += 1
                 self.ang += ang
