@@ -49,15 +49,15 @@ class Game:
             # start shot
             for b in self.bullets:
                 b.move()
-                if b.get()[0] == -50:
+                if b.get_data()[0] == -50:
                     self.bullets.remove(b)
 
-                elif self.tank_1.player_death(b.get()):
+                elif self.tank_1.player_death(b.get_data()):
                     self.score_a += 1
                     score_2.upload_score(self.score_a)
                     self.bullets.remove(b)
 
-                elif self.tank_2.player_death(b.get()):
+                elif self.tank_2.player_death(b.get_data()):
                     self.score_b += 1
                     score_1.upload_score(self.score_b)
                     self.bullets.remove(b)
