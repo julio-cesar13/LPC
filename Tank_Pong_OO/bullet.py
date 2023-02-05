@@ -27,15 +27,12 @@ class Bullet:
                 self.dy *= -1
                 self.rect.x = self.rect.x + self.dx * 2
 
-        if self.count > count_limit:
+        if self.count > touch_limit:
             self.rect = pygame.Rect(-50, 0, 5, 5)
 
         self.rect.x = self.rect.x + self.dx
         self.rect.y = self.rect.y + self.dy
         self.draw()
 
-    def trash(self):
-        return self.rect.x
-
-    def get(self):
+    def get_data(self):
         return self.rect, self.count, self.color

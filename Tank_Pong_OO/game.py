@@ -1,5 +1,4 @@
 from tank import Tank
-from collision import collision_objects
 from config import *
 from score import Score
 
@@ -9,17 +8,8 @@ pygame.init()
 class Game:
     def __init__(self):
         # color balls
-        self.green = (0, 255, 0)
-        self.blue = (0, 0, 255)
-        self.xp1 = 50
-        self.yp1 = 380
-        self.xp2 = sc_width - 100
-        self.yp2 = 380
-
-        self.ang_left = 0
-
-        self.per_1 = False
-        self.per_2 = False
+        self.player1_rect = pygame.Rect(50, 380, 50, 50)
+        self.player2_rect = pygame.Rect(sc_width - 100, 380, 50, 50)
 
         self.bullets = []
 
@@ -28,8 +18,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.game_loop = True
 
-        self.tank_1 = Tank(0, 50, 50, self.xp1, self.yp1, "sprites/player1.png", (0, 255, 0))
-        self.tank_2 = Tank(180, 50, 50, self.xp2, self.yp2, "sprites/player2.png", (0, 0, 255))
+        self.tank_1 = Tank(0, self.player1_rect, "sprites/player1.png", green)
+        self.tank_2 = Tank(180, self.player2_rect, "sprites/player2.png", blue)
 
     def run(self):
         score_1 = Score(self.score_a, 300, green)
@@ -49,29 +39,25 @@ class Game:
 
             keys = pygame.key.get_pressed()
 
-            # players collide with objects
-            per_1 = collision_objects(self.tank_1.get_information(), self.tank_2.get_information())[0]
-            per_2 = collision_objects(self.tank_1.get_information(), self.tank_2.get_information())[1]
-
             # Move p1
-            self.tank_1.move_left(keys, per_1)
+            self.tank_1.control(keys, [pygame.K_w, pygame.K_a, pygame.K_d], 0)
             self.tank_1.draw()
-
             # Move p2
-            self.tank_2.move_right(keys, per_2)
+            self.tank_2.control(keys, [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT], 1)
             self.tank_2.draw()
 
             # start shot
             for b in self.bullets:
                 b.move()
-                if b.trash() == -50:
+                if b.get()[0] == -50:
                     self.bullets.remove(b)
+
                 elif self.tank_1.player_death(b.get()):
                     self.score_a += 1
                     score_2.upload_score(self.score_a)
                     self.bullets.remove(b)
+
                 elif self.tank_2.player_death(b.get()):
-                    print(b.get())
                     self.score_b += 1
                     score_1.upload_score(self.score_b)
                     self.bullets.remove(b)
@@ -83,7 +69,7 @@ class Game:
 
             pygame.display.flip()
             screen.fill("#9f4100")
-            self.clock.tick(100)
+            self.clock.tick(150)
 
 
 game = Game()

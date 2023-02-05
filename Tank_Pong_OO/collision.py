@@ -20,23 +20,25 @@ def detection_collision(player):
         return True
 
 
-def collision_objects(obj, obj_2):
-    angle_left, rect_1 = obj[0], obj[1]
-    angle_right, rect_2 = obj_2[0], obj_2[1]
+def tank1_collision_objects(rect, angle):
     # players collide with objects
     collision_1 = pygame.sprite.Sprite()
-    load_images(collision_1, angle_left, 10, 50,
-                rect_1.x + 30 * math.cos(math.radians(-angle_left)),
-                rect_1.y + 30 * math.sin(math.radians(-angle_left)), "sprites/collision_object.png")
-
-    collision_2 = pygame.sprite.Sprite()
-    load_images(collision_2, angle_right, 10, 50, rect_2.x - 30 * math.sin(math.radians(angle_right - 90)),
-                rect_2.y - 30 * math.cos(math.radians(angle_right - 90)), "sprites/collision_object.png")
+    load_images(collision_1, angle, 10, 50,
+                rect.x + 30 * math.cos(math.radians(-angle)),
+                rect.y + 30 * math.sin(math.radians(-angle)), "sprites/collision_object.png")
 
     if detection_collision(collision_1):
         per_1 = True
     else:
         per_1 = False
+
+    return per_1
+
+
+def tank2_collision_objects(rect, angle):
+    collision_2 = pygame.sprite.Sprite()
+    load_images(collision_2, angle, 10, 50, rect.x - 30 * math.sin(math.radians(angle - 90)),
+                rect.y - 30 * math.cos(math.radians(angle - 90)), "sprites/collision_object.png")
 
     # collision player 2 with objects
     if detection_collision(collision_2):
@@ -44,4 +46,4 @@ def collision_objects(obj, obj_2):
     else:
         per_2 = False
 
-    return per_1, per_2
+    return per_2
