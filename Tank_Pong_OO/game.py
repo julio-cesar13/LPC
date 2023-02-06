@@ -10,6 +10,8 @@ class Game:
         # color balls
         self.player1_rect = pygame.Rect(50, 380, 50, 50)
         self.player2_rect = pygame.Rect(sc_width - 100, 380, 50, 50)
+        self.player3_rect = pygame.Rect(400, 100, 50, 50)
+        self.player4_rect = pygame.Rect(400, 500, 50, 50)
 
         self.bullets = []
 
@@ -20,6 +22,8 @@ class Game:
 
         self.tank_1 = Tank(0, self.player1_rect, "sprites/player1.png", green)
         self.tank_2 = Tank(180, self.player2_rect, "sprites/player2.png", blue)
+        self.tank_3 = Tank(-90, self.player3_rect,  "sprites/player2.png", (255, 0, 0))
+        self.tank_4 = Tank(90, self.player4_rect, "sprites/player1.png", (255, 0, 0))
 
     def run(self):
         score_1 = Score(self.score_a, 300, green)
@@ -46,6 +50,11 @@ class Game:
             self.tank_2.control(keys, [pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT], 1)
             self.tank_2.draw()
 
+            self.tank_3.control(keys, [pygame.K_t, pygame.K_f, pygame.K_h], 0)
+            self.tank_3.draw()
+
+            self.tank_4.control(keys, [pygame.K_i, pygame.K_j, pygame.K_l], 0)
+            self.tank_4.draw()
             # start shot
             for b in self.bullets:
                 b.move()
